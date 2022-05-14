@@ -17,6 +17,7 @@ func (k msgServer) SubmitScavenge(goCtx context.Context, msg *types.MsgSubmitSca
 		SolutionHash: msg.SolutionHash,
 		Description:  msg.Description,
 		Reward:       msg.Reward,
+		Scavenger:    msg.Creator,
 	}
 	_, found := k.GetScavenge(ctx, msg.SolutionHash)
 	if found {
@@ -27,17 +28,17 @@ func (k msgServer) SubmitScavenge(goCtx context.Context, msg *types.MsgSubmitSca
 
 	scavengerAccountAddress, err := sdk.AccAddressFromBech32(scavenger.Scavenger)
 	if err != nil {
-		panic(err)
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Scavenger Account Address invalid")
 	}
 
 	reward, parsErr := sdk.ParseCoinsNormalized(scavenger.Reward)
 
 	if parsErr != nil {
-		panic(parsErr)
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Coin parse error")
 	}
 	sendErr := k.bankKeeper.SendCoins(ctx, scavengerAccountAddress, moduleAcct, reward)
 	if sendErr != nil {
-		panic(sendErr)
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Send coins error")
 	}
 	k.SetScavenge(ctx, scavenger)
 
