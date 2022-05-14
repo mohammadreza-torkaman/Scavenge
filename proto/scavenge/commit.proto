@@ -1,0 +1,12 @@
+syntax = "proto3";
+package mohammadrezatorkaman.scavenge.scavenge;
+
+option go_package = "github.com/mohammadreza-torkaman/scavenge/x/scavenge/types";
+
+message Commit {
+  string index = 1; 
+  string solutionHash = 2; 
+  string solutionScavengerHash = 3; 
+  
+}
+
