@@ -28268,6 +28268,8 @@ paths:
                       type: string
                     scavenger:
                       type: string
+                    solution:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -28394,6 +28396,8 @@ paths:
                   reward:
                     type: string
                   scavenger:
+                    type: string
+                  solution:
                     type: string
         default:
           description: An unexpected error response.
@@ -48705,6 +48709,8 @@ definitions:
               type: string
             scavenger:
               type: string
+            solution:
+              type: string
       pagination:
         type: object
         properties:
@@ -48758,6 +48764,8 @@ definitions:
             type: string
           scavenger:
             type: string
+          solution:
+            type: string
   mohammadrezatorkaman.scavenge.scavenge.QueryParamsResponse:
     type: object
     properties:
@@ -48777,6 +48785,8 @@ definitions:
       reward:
         type: string
       scavenger:
+        type: string
+      solution:
         type: string
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object

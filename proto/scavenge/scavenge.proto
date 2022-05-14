@@ -9,6 +9,7 @@ message Scavenge {
   string description = 3; 
   string reward = 4; 
   string scavenger = 5; 
-  
+  string solution = 6;
+
 }
 

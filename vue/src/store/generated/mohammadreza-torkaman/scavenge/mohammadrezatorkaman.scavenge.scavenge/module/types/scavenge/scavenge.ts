@@ -9,6 +9,7 @@ export interface Scavenge {
   description: string;
   reward: string;
   scavenger: string;
+  solution: string;
 }
 
 const baseScavenge: object = {
@@ -17,6 +18,7 @@ const baseScavenge: object = {
   description: "",
   reward: "",
   scavenger: "",
+  solution: "",
 };
 
 export const Scavenge = {
@@ -35,6 +37,9 @@ export const Scavenge = {
     }
     if (message.scavenger !== "") {
       writer.uint32(42).string(message.scavenger);
+    }
+    if (message.solution !== "") {
+      writer.uint32(50).string(message.solution);
     }
     return writer;
   },
@@ -60,6 +65,9 @@ export const Scavenge = {
           break;
         case 5:
           message.scavenger = reader.string();
+          break;
+        case 6:
+          message.solution = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -96,6 +104,11 @@ export const Scavenge = {
     } else {
       message.scavenger = "";
     }
+    if (object.solution !== undefined && object.solution !== null) {
+      message.solution = String(object.solution);
+    } else {
+      message.solution = "";
+    }
     return message;
   },
 
@@ -108,6 +121,7 @@ export const Scavenge = {
       (obj.description = message.description);
     message.reward !== undefined && (obj.reward = message.reward);
     message.scavenger !== undefined && (obj.scavenger = message.scavenger);
+    message.solution !== undefined && (obj.solution = message.solution);
     return obj;
   },
 
@@ -137,6 +151,11 @@ export const Scavenge = {
       message.scavenger = object.scavenger;
     } else {
       message.scavenger = "";
+    }
+    if (object.solution !== undefined && object.solution !== null) {
+      message.solution = object.solution;
+    } else {
+      message.solution = "";
     }
     return message;
   },

@@ -89,6 +89,7 @@ export interface ScavengeScavenge {
   description?: string;
   reward?: string;
   scavenger?: string;
+  solution?: string;
 }
 
 /**
