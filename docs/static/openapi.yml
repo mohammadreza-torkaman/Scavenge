@@ -48286,6 +48286,8 @@ definitions:
       method.
   mohammadrezatorkaman.scavenge.scavenge.MsgCommitSolutionResponse:
     type: object
+  mohammadrezatorkaman.scavenge.scavenge.MsgRevealSolutionResponse:
+    type: object
   mohammadrezatorkaman.scavenge.scavenge.MsgSubmitScavengeResponse:
     type: object
   mohammadrezatorkaman.scavenge.scavenge.Params:
