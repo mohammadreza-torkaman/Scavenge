@@ -1,9 +1,11 @@
 package cli
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"github.com/cosmos/cosmos-sdk/client"
 	"strconv"
 
-	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/mohammadreza-torkaman/scavenge/x/scavenge/types"
@@ -14,31 +16,39 @@ var _ = strconv.Itoa(0)
 
 func CmdCommitSolution() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "commit-solution [solution-hash] [solution-scavenger-hash]",
+		Use:   "commit-solution [solution]",
 		Short: "Broadcast message commit-solution",
-		Args:  cobra.ExactArgs(2),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argSolutionHash := args[0]
-			argSolutionScavengerHash := args[1]
-
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
-
+			solution := args[0]
+			// find a hash of the solution
+			solutionHash := sha256.Sum256([]byte(solution))
+			// convert the solution hash to string
+			solutionHashString := hex.EncodeToString(solutionHash[:])
+			// convert a scavenger address to string
+			var scavenger = clientCtx.GetFromAddress().String()
+			// find the hash of solution and scavenger address
+			var solutionScavengerHash = sha256.Sum256([]byte(solution + scavenger))
+			// convert the hash to string
+			var solutionScavengerHashString = hex.EncodeToString(solutionScavengerHash[:])
+			// create a new message
 			msg := types.NewMsgCommitSolution(
 				clientCtx.GetFromAddress().String(),
-				argSolutionHash,
-				argSolutionScavengerHash,
+				string(solutionHashString),
+				string(solutionScavengerHashString),
 			)
+
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
+			// broadcast the transaction with the message to the blockchain
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
-
 	flags.AddTxFlagsToCmd(cmd)
-
 	return cmd
 }
